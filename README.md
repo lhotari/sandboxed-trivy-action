@@ -4,6 +4,8 @@
 
 [![License][license-img]][license]
 
+This action is forked from [aquasecurity/trivy-action](https://github.com/aquasecurity/trivy-action) with security hardened by running Trivy inside a sandboxed Docker container. Credits to [Aqua Security](https://www.aquasec.com/) for the original action.
+
 ## Security
 
 This action runs Trivy inside a Docker container with strict security settings to prevent container escape:
