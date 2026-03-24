@@ -31,6 +31,7 @@ This action runs Trivy inside a Docker container with strict security settings t
   * [inputs](#inputs)
   * [Environment variables](#environment-variables)
   * [Trivy config file](#trivy-config-file)
+  * [Pinning the action version](#pinning-the-action-version)
 
 ## Usage
 
@@ -53,7 +54,8 @@ jobs:
       - name: Build an image from Dockerfile
         run: docker build -t my-app:${{ github.sha }} .
       - name: Run Trivy vulnerability scanner
-        uses: lhotari/sandboxed-trivy-action@main
+        # For security, pin to a full length commit hash. See "Pinning the action version" below.
+        uses: lhotari/sandboxed-trivy-action@v1
         with:
           scan-type: 'image'
           scan-ref: 'my-app:${{ github.sha }}'
@@ -82,7 +84,8 @@ jobs:
       uses: actions/checkout@v6
 
     - name: Run Trivy vulnerability scanner in fs mode
-      uses: lhotari/sandboxed-trivy-action@main
+      # For security, pin to a full length commit hash. See "Pinning the action version" below.
+      uses: lhotari/sandboxed-trivy-action@v1
       with:
         scan-type: 'fs'
         scan-ref: '.'
@@ -113,7 +116,8 @@ If you want to disable caching, set the `cache` input to `false`, but we recomme
 
 ```yaml
     - name: Run Trivy scanner without cache
-      uses: lhotari/sandboxed-trivy-action@main
+      # For security, pin to a full length commit hash. See "Pinning the action version" below.
+      uses: lhotari/sandboxed-trivy-action@v1
       with:
         scan-type: 'fs'
         scan-ref: '.'
@@ -142,7 +146,8 @@ jobs:
         docker save -o vuln-image.tar <your-docker-image>
 
     - name: Run Trivy vulnerability scanner in tarball mode
-      uses: lhotari/sandboxed-trivy-action@main
+      # For security, pin to a full length commit hash. See "Pinning the action version" below.
+      uses: lhotari/sandboxed-trivy-action@v1
       with:
         scan-type: 'image'
         scan-ref: vuln-image.tar
@@ -173,7 +178,8 @@ jobs:
         run: docker build -t my-app:${{ github.sha }} .
 
       - name: Run Trivy vulnerability scanner
-        uses: lhotari/sandboxed-trivy-action@main
+        # For security, pin to a full length commit hash. See "Pinning the action version" below.
+        uses: lhotari/sandboxed-trivy-action@v1
         with:
           scan-type: 'image'
           scan-ref: 'my-app:${{ github.sha }}'
@@ -209,7 +215,8 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Run Trivy vulnerability scanner in repo mode
-        uses: lhotari/sandboxed-trivy-action@main
+        # For security, pin to a full length commit hash. See "Pinning the action version" below.
+        uses: lhotari/sandboxed-trivy-action@v1
         with:
           scan-type: 'fs'
           scan-ref: '.'
@@ -246,7 +253,8 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Run Trivy vulnerability scanner in IaC mode
-        uses: lhotari/sandboxed-trivy-action@main
+        # For security, pin to a full length commit hash. See "Pinning the action version" below.
+        uses: lhotari/sandboxed-trivy-action@v1
         with:
           scan-type: 'config'
           scan-ref: '.'
@@ -271,7 +279,8 @@ This step is especially useful for private repositories without [GitHub Advanced
 
 ```yaml
 - name: Run Trivy scanner
-  uses: lhotari/sandboxed-trivy-action@main
+  # For security, pin to a full length commit hash. See "Pinning the action version" below.
+  uses: lhotari/sandboxed-trivy-action@v1
   with:
     scan-type: config
     scan-ref: '.'
@@ -338,7 +347,8 @@ Since Trivy runs inside a sandboxed Docker container, host environment variables
 
 ```yaml
     - name: Run Trivy vulnerability scanner
-      uses: lhotari/sandboxed-trivy-action@main
+      # For security, pin to a full length commit hash. See "Pinning the action version" below.
+      uses: lhotari/sandboxed-trivy-action@v1
       with:
         scan-type: 'fs'
         scan-ref: '.'
@@ -351,6 +361,21 @@ Each line must be in `NAME=VALUE` format. Empty lines and lines starting with `#
 
 ### Trivy config file
 When using the `trivy-config` [Input](#inputs), you can set options using the [Trivy config file][trivy-config] (including flags that are not supported by [Inputs](#inputs), such as `--secret-config`).
+
+### Pinning the action version
+
+For improved security, it is recommended to pin the action to a full length commit hash instead of a tag. This prevents a compromised or force-pushed tag from altering the action's behavior.
+
+To find the full commit hash for a tag:
+```bash
+git ls-remote https://github.com/lhotari/sandboxed-trivy-action.git v1 | awk '{print $1}'
+```
+
+Then use it in your workflow:
+```yaml
+      - name: Run Trivy vulnerability scanner
+        uses: lhotari/sandboxed-trivy-action@<full-commit-hash>
+```
 
 [license]: https://github.com/lhotari/sandboxed-trivy-action/blob/main/LICENSE
 [license-img]: https://img.shields.io/github/license/lhotari/sandboxed-trivy-action
