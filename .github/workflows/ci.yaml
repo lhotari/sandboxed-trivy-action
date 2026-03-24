@@ -1,0 +1,80 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+env:
+  TRIVY_IMAGE: aquasec/trivy:0.69.3@sha256:bcc376de8d77cfe086a917230e818dc9f8528e3c852f7b1aff648949b6258d1c
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Run shellcheck
+        run: |
+          shellcheck --version
+          shellcheck entrypoint.sh docker_entrypoint.sh
+          shellcheck -s bash test/test.bats test/test_entrypoint.bats
+
+      - name: Run zizmor
+        uses: zizmorcore/zizmor-action@71321a20a9ded102f6e9ce5718a2fcec2c4f70d8 # v0.5.2
+        with:
+          advanced-security: false
+
+  test:
+    needs: lint
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+          submodules: true
+      - name: Pull Trivy image
+        run: docker pull ${{ env.TRIVY_IMAGE }}
+      - name: Unit tests
+        env:
+          INPUT_TRIVY_IMAGE: ${{ env.TRIVY_IMAGE }}
+        run: make unit-test
+
+      - name: Integration tests
+        env:
+          INPUT_TRIVY_IMAGE: ${{ env.TRIVY_IMAGE }}
+        run: make integration-test
+
+      - name: Scan vulnerable image with SARIF output
+        id: trivy-scan
+        uses: ./
+        continue-on-error: true
+        with:
+          scan-type: 'image'
+          scan-ref: 'knqyf263/vuln-image:1.2.3@sha256:1e8b199249d6d0ef3419ddc6eda2348d9fbdb10d350d3bb70aa98e87faa227c9'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL,HIGH'
+          exit-code: '1'
+
+      - name: Verify scan found vulnerabilities
+        env:
+          SCAN_OUTCOME: ${{ steps.trivy-scan.outcome }}
+        run: |
+          if [ "$SCAN_OUTCOME" != "failure" ]; then
+            echo "ERROR: Expected scan to fail due to vulnerabilities, but outcome was: $SCAN_OUTCOME"
+            exit 1
+          fi
+          echo "Scan correctly reported vulnerabilities (exit code 1)"
+
+      - name: Verify SARIF file was created
+        run: |
+          test -f trivy-results.sarif
+          echo "SARIF file size: $(wc -c < trivy-results.sarif) bytes"
+          jq '.runs[0].tool.driver.name' trivy-results.sarif

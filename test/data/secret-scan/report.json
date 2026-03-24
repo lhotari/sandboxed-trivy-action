@@ -1,0 +1,77 @@
+{
+  "SchemaVersion": 2,
+  "Trivy": {
+    "Version": "0.69.3"
+  },
+  "ArtifactID": "sha256:79ce4c2f8371bef1ce2a321518d3136bc1bd8f3c307ed679944a38e7cbd76c14",
+  "ArtifactName": "https://github.com/krol3/demo-trivy/",
+  "ArtifactType": "repository",
+  "Metadata": {
+    "RepoURL": "https://github.com/krol3/demo-trivy/",
+    "Branch": "main",
+    "Commit": "547db823c73fdb3385871f6235e946c72291f734",
+    "CommitMsg": "chore: add gitignore",
+    "Author": "carolina valencia <krol3@users.noreply.github.com>",
+    "Committer": "carolina valencia <krol3@users.noreply.github.com>"
+  },
+  "Results": [
+    {
+      "Target": "env",
+      "Class": "secret",
+      "Secrets": [
+        {
+          "RuleID": "github-pat",
+          "Category": "GitHub",
+          "Severity": "CRITICAL",
+          "Title": "GitHub Personal Access Token",
+          "StartLine": 5,
+          "EndLine": 5,
+          "Code": {
+            "Lines": [
+              {
+                "Number": 3,
+                "Content": "export AWS_ACCESS_KEY_ID=1234567",
+                "IsCause": false,
+                "Annotation": "",
+                "Truncated": false,
+                "Highlighted": "export AWS_ACCESS_KEY_ID=1234567",
+                "FirstCause": false,
+                "LastCause": false
+              },
+              {
+                "Number": 4,
+                "Content": "",
+                "IsCause": false,
+                "Annotation": "",
+                "Truncated": false,
+                "FirstCause": false,
+                "LastCause": false
+              },
+              {
+                "Number": 5,
+                "Content": "export GITHUB_PAT=****************************************",
+                "IsCause": true,
+                "Annotation": "",
+                "Truncated": false,
+                "Highlighted": "export GITHUB_PAT=****************************************",
+                "FirstCause": true,
+                "LastCause": true
+              },
+              {
+                "Number": 6,
+                "Content": "",
+                "IsCause": false,
+                "Annotation": "",
+                "Truncated": false,
+                "FirstCause": false,
+                "LastCause": false
+              }
+            ]
+          },
+          "Match": "export GITHUB_PAT=****************************************",
+          "Offset": 63
+        }
+      ]
+    }
+  ]
+}

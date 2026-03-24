@@ -1,0 +1,9 @@
+.idea/
+.vscode/
+
+# Test outputs
+*.test
+!test/data/*.test
+
+# Trivy DB cache
+.cache/

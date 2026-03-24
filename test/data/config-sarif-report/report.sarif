@@ -1,0 +1,290 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/main/sarif-2.1/schema/sarif-schema-2.1.0.json",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "fullName": "Trivy Vulnerability Scanner",
+          "informationUri": "https://github.com/aquasecurity/trivy",
+          "name": "Trivy",
+          "rules": [
+            {
+              "id": "DS-0001",
+              "name": "Misconfiguration",
+              "shortDescription": {
+                "text": "':latest' tag used"
+              },
+              "fullDescription": {
+                "text": "When using a 'FROM' statement you should use a specific tag to avoid uncontrolled behavior when the image is updated."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "helpUri": "https://avd.aquasec.com/misconfig/ds-0001",
+              "help": {
+                "text": "Misconfiguration DS-0001\nType: Dockerfile Security Check\nSeverity: MEDIUM\nCheck: ':latest' tag used\nMessage: Specify a tag in the 'FROM' statement for image 'ubuntu'\nLink: [DS-0001](https://avd.aquasec.com/misconfig/ds-0001)\nWhen using a 'FROM' statement you should use a specific tag to avoid uncontrolled behavior when the image is updated.",
+                "markdown": "**Misconfiguration DS-0001**\n| Type | Severity | Check | Message | Link |\n| --- | --- | --- | --- | --- |\n|Dockerfile Security Check|MEDIUM|':latest' tag used|Specify a tag in the 'FROM' statement for image 'ubuntu'|[DS-0001](https://avd.aquasec.com/misconfig/ds-0001)|\n\nWhen using a 'FROM' statement you should use a specific tag to avoid uncontrolled behavior when the image is updated."
+              },
+              "properties": {
+                "precision": "very-high",
+                "security-severity": "5.5",
+                "tags": [
+                  "misconfiguration",
+                  "security",
+                  "MEDIUM"
+                ]
+              }
+            },
+            {
+              "id": "DS-0002",
+              "name": "Misconfiguration",
+              "shortDescription": {
+                "text": "Image user should not be 'root'"
+              },
+              "fullDescription": {
+                "text": "Running containers with 'root' user can lead to a container escape situation. It is a best practice to run containers as non-root users, which can be done by adding a 'USER' statement to the Dockerfile."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "helpUri": "https://avd.aquasec.com/misconfig/ds-0002",
+              "help": {
+                "text": "Misconfiguration DS-0002\nType: Dockerfile Security Check\nSeverity: HIGH\nCheck: Image user should not be 'root'\nMessage: Last USER command in Dockerfile should not be 'root'\nLink: [DS-0002](https://avd.aquasec.com/misconfig/ds-0002)\nRunning containers with 'root' user can lead to a container escape situation. It is a best practice to run containers as non-root users, which can be done by adding a 'USER' statement to the Dockerfile.",
+                "markdown": "**Misconfiguration DS-0002**\n| Type | Severity | Check | Message | Link |\n| --- | --- | --- | --- | --- |\n|Dockerfile Security Check|HIGH|Image user should not be 'root'|Last USER command in Dockerfile should not be 'root'|[DS-0002](https://avd.aquasec.com/misconfig/ds-0002)|\n\nRunning containers with 'root' user can lead to a container escape situation. It is a best practice to run containers as non-root users, which can be done by adding a 'USER' statement to the Dockerfile."
+              },
+              "properties": {
+                "precision": "very-high",
+                "security-severity": "8.0",
+                "tags": [
+                  "misconfiguration",
+                  "security",
+                  "HIGH"
+                ]
+              }
+            },
+            {
+              "id": "DS-0004",
+              "name": "Misconfiguration",
+              "shortDescription": {
+                "text": "Port 22 exposed"
+              },
+              "fullDescription": {
+                "text": "Exposing port 22 might allow users to SSH into the container."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "helpUri": "https://avd.aquasec.com/misconfig/ds-0004",
+              "help": {
+                "text": "Misconfiguration DS-0004\nType: Dockerfile Security Check\nSeverity: MEDIUM\nCheck: Port 22 exposed\nMessage: Port 22 should not be exposed in Dockerfile\nLink: [DS-0004](https://avd.aquasec.com/misconfig/ds-0004)\nExposing port 22 might allow users to SSH into the container.",
+                "markdown": "**Misconfiguration DS-0004**\n| Type | Severity | Check | Message | Link |\n| --- | --- | --- | --- | --- |\n|Dockerfile Security Check|MEDIUM|Port 22 exposed|Port 22 should not be exposed in Dockerfile|[DS-0004](https://avd.aquasec.com/misconfig/ds-0004)|\n\nExposing port 22 might allow users to SSH into the container."
+              },
+              "properties": {
+                "precision": "very-high",
+                "security-severity": "5.5",
+                "tags": [
+                  "misconfiguration",
+                  "security",
+                  "MEDIUM"
+                ]
+              }
+            },
+            {
+              "id": "DS-0026",
+              "name": "Misconfiguration",
+              "shortDescription": {
+                "text": "No HEALTHCHECK defined"
+              },
+              "fullDescription": {
+                "text": "You should add HEALTHCHECK instruction in your docker container images to perform the health check on running containers."
+              },
+              "defaultConfiguration": {
+                "level": "note"
+              },
+              "helpUri": "https://avd.aquasec.com/misconfig/ds-0026",
+              "help": {
+                "text": "Misconfiguration DS-0026\nType: Dockerfile Security Check\nSeverity: LOW\nCheck: No HEALTHCHECK defined\nMessage: Add HEALTHCHECK instruction in your Dockerfile\nLink: [DS-0026](https://avd.aquasec.com/misconfig/ds-0026)\nYou should add HEALTHCHECK instruction in your docker container images to perform the health check on running containers.",
+                "markdown": "**Misconfiguration DS-0026**\n| Type | Severity | Check | Message | Link |\n| --- | --- | --- | --- | --- |\n|Dockerfile Security Check|LOW|No HEALTHCHECK defined|Add HEALTHCHECK instruction in your Dockerfile|[DS-0026](https://avd.aquasec.com/misconfig/ds-0026)|\n\nYou should add HEALTHCHECK instruction in your docker container images to perform the health check on running containers."
+              },
+              "properties": {
+                "precision": "very-high",
+                "security-severity": "2.0",
+                "tags": [
+                  "misconfiguration",
+                  "security",
+                  "LOW"
+                ]
+              }
+            },
+            {
+              "id": "DS-0029",
+              "name": "Misconfiguration",
+              "shortDescription": {
+                "text": "'apt-get' missing '--no-install-recommends'"
+              },
+              "fullDescription": {
+                "text": "'apt-get' install should use '--no-install-recommends' to minimize image size."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "helpUri": "https://avd.aquasec.com/misconfig/ds-0029",
+              "help": {
+                "text": "Misconfiguration DS-0029\nType: Dockerfile Security Check\nSeverity: HIGH\nCheck: 'apt-get' missing '--no-install-recommends'\nMessage: '--no-install-recommends' flag is missed: 'apt-get update && apt-get install -y curl'\nLink: [DS-0029](https://avd.aquasec.com/misconfig/ds-0029)\n'apt-get' install should use '--no-install-recommends' to minimize image size.",
+                "markdown": "**Misconfiguration DS-0029**\n| Type | Severity | Check | Message | Link |\n| --- | --- | --- | --- | --- |\n|Dockerfile Security Check|HIGH|'apt-get' missing '--no-install-recommends'|'--no-install-recommends' flag is missed: 'apt-get update && apt-get install -y curl'|[DS-0029](https://avd.aquasec.com/misconfig/ds-0029)|\n\n'apt-get' install should use '--no-install-recommends' to minimize image size."
+              },
+              "properties": {
+                "precision": "very-high",
+                "security-severity": "8.0",
+                "tags": [
+                  "misconfiguration",
+                  "security",
+                  "HIGH"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "results": [
+        {
+          "ruleId": "DS-0001",
+          "ruleIndex": 0,
+          "level": "warning",
+          "message": {
+            "text": "Artifact: Dockerfile\nType: dockerfile\nVulnerability DS-0001\nSeverity: MEDIUM\nMessage: Specify a tag in the 'FROM' statement for image 'ubuntu'\nLink: [DS-0001](https://avd.aquasec.com/misconfig/ds-0001)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "Dockerfile",
+                  "uriBaseId": "ROOTPATH"
+                },
+                "region": {
+                  "startLine": 1,
+                  "startColumn": 1,
+                  "endLine": 1,
+                  "endColumn": 1
+                }
+              },
+              "message": {
+                "text": "Dockerfile"
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "DS-0002",
+          "ruleIndex": 1,
+          "level": "error",
+          "message": {
+            "text": "Artifact: Dockerfile\nType: dockerfile\nVulnerability DS-0002\nSeverity: HIGH\nMessage: Last USER command in Dockerfile should not be 'root'\nLink: [DS-0002](https://avd.aquasec.com/misconfig/ds-0002)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "Dockerfile",
+                  "uriBaseId": "ROOTPATH"
+                },
+                "region": {
+                  "startLine": 2,
+                  "startColumn": 1,
+                  "endLine": 2,
+                  "endColumn": 1
+                }
+              },
+              "message": {
+                "text": "Dockerfile"
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "DS-0004",
+          "ruleIndex": 2,
+          "level": "warning",
+          "message": {
+            "text": "Artifact: Dockerfile\nType: dockerfile\nVulnerability DS-0004\nSeverity: MEDIUM\nMessage: Port 22 should not be exposed in Dockerfile\nLink: [DS-0004](https://avd.aquasec.com/misconfig/ds-0004)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "Dockerfile",
+                  "uriBaseId": "ROOTPATH"
+                },
+                "region": {
+                  "startLine": 4,
+                  "startColumn": 1,
+                  "endLine": 4,
+                  "endColumn": 1
+                }
+              },
+              "message": {
+                "text": "Dockerfile"
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "DS-0026",
+          "ruleIndex": 3,
+          "level": "note",
+          "message": {
+            "text": "Artifact: Dockerfile\nType: dockerfile\nVulnerability DS-0026\nSeverity: LOW\nMessage: Add HEALTHCHECK instruction in your Dockerfile\nLink: [DS-0026](https://avd.aquasec.com/misconfig/ds-0026)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "Dockerfile",
+                  "uriBaseId": "ROOTPATH"
+                },
+                "region": {
+                  "startLine": 1,
+                  "startColumn": 1,
+                  "endLine": 1,
+                  "endColumn": 1
+                }
+              },
+              "message": {
+                "text": "Dockerfile"
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "DS-0029",
+          "ruleIndex": 4,
+          "level": "error",
+          "message": {
+            "text": "Artifact: Dockerfile\nType: dockerfile\nVulnerability DS-0029\nSeverity: HIGH\nMessage: '--no-install-recommends' flag is missed: 'apt-get update && apt-get install -y curl'\nLink: [DS-0029](https://avd.aquasec.com/misconfig/ds-0029)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "Dockerfile",
+                  "uriBaseId": "ROOTPATH"
+                },
+                "region": {
+                  "startLine": 3,
+                  "startColumn": 1,
+                  "endLine": 3,
+                  "endColumn": 1
+                }
+              },
+              "message": {
+                "text": "Dockerfile"
+              }
+            }
+          ]
+        }
+      ],
+      "columnKind": "utf16CodeUnits"
+    }
+  ]
+}

@@ -1,0 +1,145 @@
+name: 'Sandboxed Trivy'
+description: 'Scans container images for vulnerabilities with Trivy running inside a sandboxed Docker container'
+author: 'lhotari'
+
+branding:
+  icon: 'shield'
+  color: 'blue'
+
+inputs:
+  scan-type:
+    description: 'Scan type to use for scanning vulnerability'
+    required: false
+    default: 'image'
+  scan-ref:
+    description: 'Scan reference (image name or tar file for image scans, path for fs/config scans, URL for repo scans). Required unless trivy-config is provided.'
+    required: false
+    default: ''
+  exit-code:
+    description: 'exit code when vulnerabilities were found'
+    required: false
+  ignore-unfixed:
+    description: 'ignore unfixed vulnerabilities'
+    required: false
+    default: 'false'
+  vuln-type:
+    description: 'comma-separated list of vulnerability types (os,library)'
+    required: false
+    default: 'os,library'
+  severity:
+    description: 'severities of vulnerabilities to be displayed'
+    required: false
+    default: 'UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL'
+  format:
+    description: 'output format (table, json, template)'
+    required: false
+    default: 'table'
+  template:
+    description: 'use an existing template for rendering output (@/contrib/gitlab.tpl, @/contrib/junit.tpl, @/contrib/html.tpl)'
+    required: false
+    default: ''
+  output:
+    description: 'writes results to a file with the specified file name'
+    required: false
+    default: ''
+  skip-dirs:
+    description: 'comma separated list of directories where traversal is skipped'
+    required: false
+    default: ''
+  skip-files:
+    description: 'comma separated list of files to be skipped'
+    required: false
+    default: ''
+  cache-dir:
+    description: 'specify where the cache is stored'
+    required: false
+    default: '${{ github.workspace }}/.cache/trivy'
+  timeout:
+    description: 'timeout (default 5m0s)'
+    required: false
+    default: ''
+  ignore-policy:
+    description: 'filter vulnerabilities with OPA rego language'
+    required: false
+    default: ''
+  hide-progress:
+    description: 'suppress progress bar and log output'
+    required: false
+  list-all-pkgs:
+    description: 'output all packages regardless of vulnerability'
+    required: false
+    default: 'false'
+  scanners:
+    description: 'comma-separated list of what security issues to detect'
+    required: false
+    default: ''
+  trivyignores:
+    description: 'comma-separated list of relative paths within the repository to one or more .trivyignore files, or a single .trivyignore.yaml file.'
+    required: false
+    default: ''
+  trivy-config:
+    description: 'path to trivy.yaml config'
+    required: false
+  limit-severities-for-sarif:
+    description: 'limit severities for SARIF format'
+    required: false
+  trivy-image:
+    description: 'Docker image to use for running Trivy'
+    required: false
+    default: 'aquasec/trivy:0.69.3@sha256:bcc376de8d77cfe086a917230e818dc9f8528e3c852f7b1aff648949b6258d1c'
+  docker-tar-dir:
+    description: 'Directory for storing docker save tar files (for image scans). Uses a temp directory if empty.'
+    required: false
+    default: ''
+  trivy-env:
+    description: 'Newline-separated list of NAME=VALUE pairs for additional Trivy environment variables to pass into the sandboxed container'
+    required: false
+    default: ''
+  cache:
+    description: 'Used to specify whether caching is needed. Set to false, if you would like to disable caching.'
+    required: false
+    default: 'true'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Get current date
+      id: date
+      shell: bash
+      run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+
+    - name: Restore DB from cache
+      if: ${{ inputs.cache == 'true' }}
+      uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
+      with:
+        path: ${{ inputs.cache-dir }}
+        key: cache-trivy-${{ steps.date.outputs.date }}
+        restore-keys: cache-trivy-
+
+    - name: Run Trivy (sandboxed)
+      shell: bash
+      run: "$GITHUB_ACTION_PATH/entrypoint.sh"
+      env:
+        INPUT_SCAN_TYPE: ${{ inputs.scan-type }}
+        INPUT_SCAN_REF: ${{ inputs.scan-ref }}
+        INPUT_EXIT_CODE: ${{ inputs.exit-code }}
+        INPUT_IGNORE_UNFIXED: ${{ inputs.ignore-unfixed }}
+        INPUT_VULN_TYPE: ${{ inputs.vuln-type }}
+        INPUT_SEVERITY: ${{ inputs.severity }}
+        INPUT_FORMAT: ${{ inputs.format }}
+        INPUT_TEMPLATE: ${{ inputs.template }}
+        INPUT_OUTPUT: ${{ inputs.output }}
+        INPUT_SKIP_DIRS: ${{ inputs.skip-dirs }}
+        INPUT_SKIP_FILES: ${{ inputs.skip-files }}
+        INPUT_CACHE_DIR: ${{ inputs.cache-dir }}
+        INPUT_TIMEOUT: ${{ inputs.timeout }}
+        INPUT_IGNORE_POLICY: ${{ inputs.ignore-policy }}
+        INPUT_HIDE_PROGRESS: ${{ inputs.hide-progress }}
+        INPUT_LIST_ALL_PKGS: ${{ inputs.list-all-pkgs }}
+        INPUT_SCANNERS: ${{ inputs.scanners }}
+        INPUT_TRIVYIGNORES: ${{ inputs.trivyignores }}
+        INPUT_TRIVY_CONFIG: ${{ inputs.trivy-config }}
+        INPUT_LIMIT_SEVERITIES_FOR_SARIF: ${{ inputs.limit-severities-for-sarif }}
+        INPUT_TRIVY_IMAGE: ${{ inputs.trivy-image }}
+        INPUT_DOCKER_TAR_DIR: ${{ inputs.docker-tar-dir }}
+        INPUT_TRIVY_ENV: ${{ inputs.trivy-env }}
