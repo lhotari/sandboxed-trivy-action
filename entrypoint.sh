@@ -74,7 +74,7 @@ case "$scanType" in
     fi
     docker_args+=(--tmpfs "/tmp:rw,noexec")
     ;;
-  fs | config)
+  fs | rootfs | config)
     if [ -n "$scanRef" ]; then
       localPath="$(realpath "$scanRef")"
       if [ -f "$localPath" ]; then
