@@ -226,7 +226,7 @@ if [ -n "${INPUT_TRIVY_ENV:-}" ]; then
 fi
 
 # --- Run docker ---
-TRIVY_IMAGE="${INPUT_TRIVY_IMAGE:-aquasec/trivy:0.69.3@sha256:bcc376de8d77cfe086a917230e818dc9f8528e3c852f7b1aff648949b6258d1c}"
+TRIVY_IMAGE="${INPUT_TRIVY_IMAGE:-ghcr.io/aquasecurity/trivy:0.69.3@sha256:bcc376de8d77cfe086a917230e818dc9f8528e3c852f7b1aff648949b6258d1c}"
 
 echo "Running Trivy in sandboxed container ($TRIVY_IMAGE)..."
 returnCode=0

@@ -1,4 +1,4 @@
-TRIVY_IMAGE ?= aquasec/trivy:0.69.3
+TRIVY_IMAGE ?= ghcr.io/aquasecurity/trivy:0.69.3
 CACHE_DIR := .cache
 BATS_LIB_PATH := $(CURDIR)/test/test_helper
 BATS := $(CURDIR)/test/test_helper/bats-core/bin/bats

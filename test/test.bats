@@ -19,7 +19,7 @@ pull_amd64() {
 setup_file() {
   setup_trivy_env
 
-  local trivy_image="${INPUT_TRIVY_IMAGE:-aquasec/trivy:0.69.3}"
+  local trivy_image="${INPUT_TRIVY_IMAGE:-ghcr.io/aquasecurity/trivy:0.69.3}"
 
   # Pull the trivy docker image
   docker pull "$trivy_image" 1>&3 2>&3
