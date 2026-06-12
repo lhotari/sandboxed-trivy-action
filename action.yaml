@@ -86,7 +86,7 @@ inputs:
   trivy-image:
     description: 'Docker image to use for running Trivy'
     required: false
-    default: 'aquasec/trivy:0.69.3@sha256:bcc376de8d77cfe086a917230e818dc9f8528e3c852f7b1aff648949b6258d1c'
+    default: 'ghcr.io/aquasecurity/trivy:0.69.3@sha256:bcc376de8d77cfe086a917230e818dc9f8528e3c852f7b1aff648949b6258d1c'
   docker-tar-dir:
     description: 'Directory for storing docker save tar files (for image scans). Uses a temp directory if empty.'
     required: false
